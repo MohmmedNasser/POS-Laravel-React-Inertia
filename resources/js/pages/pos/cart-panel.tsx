@@ -9,6 +9,7 @@ interface Props {
     onClearCart: () => void;
     onRemoveItem: (productId: number) => void;
     onUpdateQuantity: (productId: number, quantity: number) => void;
+    onCheckout: () => void;
 }
 
 export default function CartPanel({
@@ -17,6 +18,7 @@ export default function CartPanel({
     onClearCart,
     onRemoveItem,
     onUpdateQuantity,
+    onCheckout,
 }: Props) {
     return (
         <>
@@ -90,7 +92,7 @@ export default function CartPanel({
                                 <Button
                                     className="mt-auto w-full cursor-pointer"
                                     variant="default"
-                                    onClick={() => {}}
+                                    onClick={onCheckout}
                                 >
                                     Checkout
                                 </Button>

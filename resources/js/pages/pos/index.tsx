@@ -6,6 +6,7 @@ import { Input } from '@/components/ui/input';
 import ProductGrid from './product-grid';
 import CartPanel from './cart-panel';
 import { useCart } from './use-cart';
+import CheckoutDialog from './checkout-dialog';
 
 interface Props {
     products: Product[];
@@ -15,6 +16,7 @@ export default function PosIndex({ products }: Props) {
     const [searchValue, setSearchValue] = useState('');
     const { items, subtotal, addToCart, removeItem, updateItem, clearCart } =
         useCart();
+    const [showCheckout, setShowCheckout] = useState(false);
 
     const searchProducts = (): Product[] => {
         if (!searchValue) {
@@ -65,9 +67,18 @@ export default function PosIndex({ products }: Props) {
                         onClearCart={clearCart}
                         onRemoveItem={removeItem}
                         onUpdateQuantity={updateItem}
+                        onCheckout={() => setShowCheckout(true)}
                     />
                 </div>
             </div>
+
+            <CheckoutDialog
+                open={showCheckout}
+                items={items}
+                subtotal={subtotal}
+                onClose={() => setShowCheckout(false)}
+                onSuccess={clearCart}
+            />
         </>
     );
 }
