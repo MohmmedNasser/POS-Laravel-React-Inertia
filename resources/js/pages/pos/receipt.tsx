@@ -21,7 +21,11 @@ export default function Receipt({ sale }: Props) {
                                 Back to POS
                             </Link>
                         </Button>
-                        <Button variant={'default'} className="cursor-pointer">
+                        <Button
+                            variant={'default'}
+                            className="cursor-pointer"
+                            onClick={() => window.print()}
+                        >
                             <Printer className="h-4 w-4" />
                             Print Receipt
                         </Button>
@@ -33,13 +37,12 @@ export default function Receipt({ sale }: Props) {
                         Official Receipt
                     </h1>
 
-                    <div className="grid grid-cols-2 gap-4">
+                    <div className="flex justify-between">
                         <div className="space-y-2">
                             <p>
                                 <strong>Receipt No:</strong> #
                                 {'Receipt #' + sale.id}
                             </p>
-
                             <p>
                                 <strong>Status:</strong> {sale.status}
                             </p>

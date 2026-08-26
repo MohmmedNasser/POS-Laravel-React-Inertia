@@ -17,5 +17,4 @@ class SaleItem extends Model
     {
         return $this->belongsTo(Sale::class);
     }
-
 }

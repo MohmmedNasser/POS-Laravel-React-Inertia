@@ -10,7 +10,6 @@ use Illuminate\Validation\ValidationException;
 
 class CheckoutController extends Controller
 {
-
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -24,11 +23,11 @@ class CheckoutController extends Controller
             $total = 0;
             $saleItems = [];
 
-            foreach($validated['items'] as $item) {
+            foreach ($validated['items'] as $item) {
                 $product = Product::lockForUpdate()->findOrFail($item['product_id']);
-                if($product->stock < $item['quantity']) {
+                if ($product->stock < $item['quantity']) {
                     throw ValidationException::withMessages([
-                        'items' => "Not enough stock for {$product->name}"
+                        'items' => "Not enough stock for {$product->name}",
                     ]);
                 }
 
@@ -49,14 +48,14 @@ class CheckoutController extends Controller
 
             $cash = (float) $validated['cash_tendered'];
 
-            if($cash < $total) {
+            if ($cash < $total) {
                 throw ValidationException::withMessages([
-                    'cash_tendered' => 'Cash tendered is less than the total'
+                    'cash_tendered' => 'Cash tendered is less than the total',
                 ]);
             }
 
             $sale = Sale::create([
-                'user_id'       => $request->user()->id,
+                'user_id' => $request->user()->id,
                 'total' => round($total),
                 'cash_tendered' => $cash,
                 'change_amount' => round($cash - $total, 2),
@@ -68,14 +67,15 @@ class CheckoutController extends Controller
 
         });
 
-        return redirect()->route('receipt',$saleId);
+        return redirect()->route('receipt', $saleId);
     }
 
-    public function receipt(Sale $sale) {
+    public function receipt(Sale $sale)
+    {
         $sale->load('items');
+
         return inertia('pos/receipt', [
             'sale' => $sale,
         ]);
     }
-
 }
